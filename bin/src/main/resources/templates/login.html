@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>登录</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="/plugins/icheck-bootstrap/icheck-bootstrap.min.css">  
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="card">
+    <div class="card-body login-card-body">
+      <h3 class="login-box-msg">明细管理系统</h3>
+      <form action="/login" method="post">
+        <div class="input-group mb-3">
+          <input id="username" name="username" type="text" class="form-control" required placeholder="账号" value="admin">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input id="password" name="password" type="password" class="form-control" required placeholder="密码" value="123456">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <div class="icheck-info">
+            <input id="remember" name="remember" type="checkbox">
+            <label for="remember">记住我 </label>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <button id="dologin" type="submit" class="btn btn-info btn-block">登录</button>
+            <input type="hidden" id="errorinfo" th:value="${error}">
+        </div>
+        <div class="input-group mb-3">
+        	<div class="card bg-gradient-danger col-12" id="errorcard" hidden>
+              <div class="card-header">
+                <h3 class="card-title" th:text="${error}"></h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <!-- /.card-tools -->
+              </div>
+              <!-- /.card-header -->
+            </div>
+            <!-- /.card -->
+        </div>
+      </form>
+    </div>
+    <!-- /.login-card-body -->
+  </div>
+</div>
+<!-- /.login-box -->
+
+<!-- jQuery -->
+<script type="text/javascript" src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script type="text/javascript" src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script type="text/javascript" src="/js/adminlte.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function() {		
+		var error = $("#errorinfo").val();
+		//alert(error);
+		if(error == null || error == "") {
+			$('#errorcard').attr("hidden");
+		} else {
+			$('#errorcard').removeAttr("hidden");
+		}
+		sessionStorage.clear();
+	});
+</script>
+</body>
+</html>
