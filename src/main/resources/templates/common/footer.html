@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<footer class="main-footer" th:fragment="common_footer">
+		<div class="float-right d-none d-sm-block">
+			<b>Version</b> 1.0.0
+		</div>
+		<strong>Copyright &copy; 2019-2025 <a href="">白云渐变</a>.</strong> All rights reserved.
+	</footer>
+	<div th:fragment="common_js">
+		<!-- jQuery -->
+		<script type="text/javascript" src="/plugins/jquery/jquery.min.js"></script>
+		<!-- Bootstrap 4 -->
+		<script type="text/javascript" src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- AdminLTE App -->
+		<script type="text/javascript" src="/js/adminlte.min.js"></script>
+		<!-- ChartJS -->
+		<script type="text/javascript" src="/plugins/chart.js/Chart.min.js"></script>
+		<!-- Sweetalert 2 -->
+		<script type="text/javascript" src="/plugins/sweetalert2/sweetalert2.min.js"></script>
+		<!-- DataTables -->
+		<script type="text/javascript" src="/plugins/datatables/jquery.dataTables.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-buttons/js/dataTables.buttons.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-buttons/js/buttons.html5.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/jszip/jszip.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-buttons/js/buttons.print.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script type="text/javascript" src="/plugins/datatables/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<!-- switch bootstrap -->
+		<script type="text/javascript" src="/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+		<!-- 页面初始化工作 -->
+		<script type="text/javascript">
+			$(document).ready(function() {				
+				// 配置登录用户信息
+				var loggedUserStr = sessionStorage.getItem("loggedUser");
+				var loggedUser = new Object;
+				if(loggedUserStr != null) {
+					loggedUser = JSON.parse(loggedUserStr);					
+			    } else {
+			    	$.ajax({
+						type: "GET",
+						url: "/userInfo/getLoggedUser",
+						success: function(result) {
+							sessionStorage.setItem("loggedUser", JSON.stringify(result));
+							loggedUser = result;
+					    },
+					    async: false,
+					    dataType: "json"
+					});
+			    }
+				$("#username").html(loggedUser.userName);
+				$("#useralias").html(loggedUser.userAlias);
+				var rolelist = new Array();
+				$.each(loggedUser.roles, function(i, role) {
+					rolelist.push(role.description);
+				});
+				$("#userrole").html(rolelist.join("，"));
+				
+				// 激活对应的导航菜单
+				$(".sidebar .nav-link").removeClass("active");
+				var activeMenu = sessionStorage.getItem("activemenu");
+				if(activeMenu != null) {
+					$("#" + activeMenu).addClass("active");
+				}
+				
+				// 初始化bootstrap-switch
+				$("input[data-bootstrap-switch]").each(function(){
+				      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+				    });
+			});
+		</script>
+	</div>
+</body>
+</html>

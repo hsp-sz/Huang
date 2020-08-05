@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/head :: common_head(~{::title}, ~{})">
+    <title>产品明细</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav th:replace="common/navigation :: common_navbar">
+        </nav>
+        <!-- Main Sidebar Container -->
+        <aside th:replace="common/navigation :: common_sidebar">
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>产品明细</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/index">主页</a></li>
+                                <li class="breadcrumb-item"><a href="/artifact">产品</a></li>
+                                <li class="breadcrumb-item">产品明细</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                	<!-- card 开始 -->                
+	                <div class="card card-info card-outline">
+			          <div class="card-header">
+						    <div class="float-right">						    
+						    	<div class="d-inline"><button class="btn btn-info" type="button" id="btnNewDetail"   ><i class="fa fa-wrench"></i>&nbsp;新增明细</button></div>
+						    	<div class="d-inline"><button class="btn btn-success" type="button" id="btnExportDetail"><i class="fa fa-download"></i>&nbsp;导出到Excel</button></div>
+						    	<div class="d-inline"><button class="btn btn-secondary" type="button" id="btnPrintDetail" ><i class="fa fa-print"></i>&nbsp;打印</button></div>
+						    </div>
+			          </div>
+			          <!-- 这里放各tabs列出的明细表格 -->
+			          <div class="card-body" id="detailCardBody">	
+			          
+			          
+           
+		            
+		           
+		              </div><!-- /.card-body -->
+	            	</div><!-- /.card -->                
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- footer -->
+        <footer th:replace="common/footer :: common_footer"></footer>        
+    </div>
+    <!-- ./wrapper -->    
+	<div th:replace="common/footer :: common_js"></div>
+	<script type="text/javascript">
+		// 创建info-box
+		function createInfoBox(data) {
+			var html = '';
+			html += '<div class="row" style="margin-top:10px;">';
+			html += '  <div class="col-md-3 col-sm-6 col-12">';
+			html += '    <div class="info-box">';
+			html += '      <span class="info-box-icon bg-info"><i class="far fa-bookmark"></i></span>';
+			html += '      <div class="info-box-content">';
+			html += '        <span class="info-box-text">图号</span>';
+			html += '        <span class="info-box-number">' + data.artifact.artifactCode + '</span>';
+			html += '      </div>';
+			html += '    </div>';
+			html += '  </div>';
+			html += '  <div class="col-md-3 col-sm-6 col-12">';
+			html += '    <div class="info-box">';
+			html += '      <span class="info-box-icon bg-success"><i class="ion ion-ios-gear-outline"></i></span>';
+			html += '      <div class="info-box-content">';
+			html += '        <span class="info-box-text">名称</span>';
+			html += '        <span class="info-box-number">' + data.artifact.artifactName + '</span>';
+			html += '      </div>';
+			html += '    </div>';
+			html += '  </div>';
+			html += '  <div class="col-md-3 col-sm-6 col-12">';
+			html += '    <div class="info-box">';
+			html += '      <span class="info-box-icon bg-warning"><i class="far fa-hourglass"></i></span>';
+			html += '      <div class="info-box-content">';
+			html += '        <span class="info-box-text">重量</span>';
+			html += '        <span class="info-box-number">' + data.artifact.weight + '</span>';
+			html += '      </div>';
+			html += '    </div>';
+			html += '  </div>';
+			html += '  <div class="col-md-3 col-sm-6 col-12">';
+			html += '    <div class="info-box">';
+			html += '      <span class="info-box-icon bg-danger"><i class="far fa-star"></i></span>';
+			html += '      <div class="info-box-content">';
+			html += '        <span class="info-box-text">其零件数量需乘倍数</span>';
+			html += '        <span class="info-box-number">' + data.times + '</span>';
+			html += '      </div>';
+			html += '    </div>';
+			html += '  </div>';
+			html += '</div>';
+			return html;
+		}
+	
+		// 创建一个表格
+		function createTable(tableId, data) {
+			var html = '<div class="table-responsive">';
+			html += '<table class="table table-hover table-striped" id="' + tableId + '">';
+			html += '<thead>';
+			html += '    <tr>';
+			html += '      <th scope="col">#</th>';
+			html += '      <th scope="col">名称</th>';
+			html += '      <th scope="col">图号</th>';
+			html += '      <th scope="col">重量</th>';
+			html += '      <th scope="col">数量</th>';
+			html += '      <th scope="col">材料</th>';
+			html += '      <th scope="col">需分解</th>';
+			html += '      <th scope="col">操作</th>';
+			html += '    </tr>';
+			html += '</thead>';
+			html += '<tbody>';
+			$.each(data, function(i, item) {
+				html += '<tr>';
+				html += '<th scope="row">' + (i+1) + '</th>';
+				if(item.needSplit) {					
+					html += '<td><a href="#" onclick="showMatchingTab(\'tab'+ item.slave.artifactId + '\')">' + item.slave.artifactName + '</a></td>';
+				} else {
+					html += '<td>' + item.slave.artifactName + '</td>';
+				}
+				html += '<td>' + item.slave.artifactCode + '</td>';
+				html += '<td>' + item.slave.weight + '</td>';
+				html += '<td>' + item.number + '</td>';
+				html += '<td>' + item.slave.materialName + '</td>';
+				if(item.needSplit) {
+					html += '<td><span class="badge bg-secondary">' + item.needSplit + '</span></td>';
+				} else {
+					html += '<td>' + item.needSplit + '</td>';
+				}
+				html += '<td>';
+				html += '<button type="button" class="btn btn-info btn-sm" onclick="editDetail(\'' + item.detailId + '\')"><i class="fas fa-pencil-alt"></i>&nbsp;编辑</button>&nbsp;';
+				html += '<button type="button" class="btn btn-danger btn-sm" onclick="deleteDetail(\'' + item.detailId + '\')"><i class="fas fa-trash"></i>&nbsp;删除</button>&nbsp;';
+				html += '</td>';
+				html += '</tr>';
+			});
+			html += '</tbody>';
+			html += '</table>';
+			html += '</div>';
+			return html;
+		}
+		
+		function showMatchingTab(tabId) {
+			$("#" + tabId).tab('show');
+		}
+		
+		function editDetail(detailId) {
+			alert(detailId);
+		}
+		
+		function deleteDetail(detailId) {
+			alert(detailId);
+		}
+	
+		$(document).ready(function() {
+			var masterId = sessionStorage.getItem("artifactId");
+			if(masterId != null) {
+				$.ajax({
+					type: "GET",
+					url:  "/artifact/findRecursiveDetail",
+					data: {masterId: masterId},
+					success: function(result) {						
+						var navitem = '<ul class="nav nav-tabs" id="tabDetail" role="tablist">';
+						var content = '<div class="tab-content" id="tabContent">';
+						$.each(result, function(i, item) {					
+							navitem += '<li class="nav-item">';
+							if(i == 0) {
+								navitem += '  <a class="nav-link active" id="tab' + item.artifact.artifactId + '" data-toggle="pill" href="#content' + item.artifact.artifactId + '" role="tab" aria-controls="content' + item.artifact.artifactId + '" aria-selected="true">' + item.artifact.artifactName + '</a>';
+							} else {
+								navitem += '  <a class="nav-link" id="tab' + item.artifact.artifactId + '" data-toggle="pill" href="#content' + item.artifact.artifactId + '" role="tab" aria-controls="content' + item.artifact.artifactId + '" aria-selected="false">' + item.artifact.artifactName + '</a>';
+							}							
+							navitem += '</li>';
+							if(i == 0) {
+								content += '<div class="tab-pane fade show active" id="content' + item.artifact.artifactId + '" role="tabpanel" aria-labelledby="tab' + item.artifact.artifactId + '">';
+							} else {
+								content += '<div class="tab-pane fade" id="content' + item.artifact.artifactId + '" role="tabpanel" aria-labelledby="tab' + item.artifact.artifactId + '">';
+							}
+							content += createInfoBox(item);
+							content += createTable('table' + item.artifact.artifactId, item.detail);
+							content += '</div>';							
+						});
+						navitem += '</ul>';
+						content += '</div>';
+						var html = '';
+						html += navitem;
+						// 公共区域, 可用于显示公共信息, 备用
+						// html += '<div class="tab-custom-content">';
+						// html += '  <p class="lead mb-0">Custom Content goes here</p>';
+						// html += '</div>';
+						html += content;
+						$("#detailCardBody").html(html);
+				    },
+				    dataType: "json"
+				});
+			}
+		    
+		});
+	</script>	
+</body>
+</html>

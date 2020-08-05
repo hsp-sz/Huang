@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="common/head :: common_head(~{::title}, ~{})">
+    <title>明细导入</title>
+</head>
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        <!-- Navbar -->
+        <nav th:replace="common/navigation :: common_navbar">
+        </nav>
+        <!-- Main Sidebar Container -->
+        <aside th:replace="common/navigation :: common_sidebar">
+        </aside>
+
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            <!-- Content Header (Page header) -->
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-sm-6">
+                            <h1>导入明细</h1>
+                        </div>
+                        <div class="col-sm-6">
+                            <ol class="breadcrumb float-sm-right">
+                                <li class="breadcrumb-item"><a href="/index">主页</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:sessionStorage.setItem('activemenu', 'menuartifact');window.location = '/artifact';">产品</a></li>
+                                <li class="breadcrumb-item">导入明细</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div><!-- /.container-fluid -->
+            </section>
+
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                
+                
+                </div>
+            </section>
+            <!-- /.content -->
+        </div>
+        <!-- /.content-wrapper -->
+
+        <!-- footer -->
+        <footer th:replace="common/footer :: common_footer"></footer>        
+    </div>
+    <!-- ./wrapper -->    
+	<div th:replace="common/footer :: common_js"></div>
+	<script type="text/javascript">	
+		$(document).ready(function() {
+
+		    
+		});
+	</script>	
+</body>
+</html>
