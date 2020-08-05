@@ -61,7 +61,7 @@ public class ArtifactController {
 		ArtifactDetail detail = artifactDetailService.getArtifactDetailById(detailId);
 		if(detail == null) {
 			Map<String, Object> map = new HashMap<>();
-			map.put("status", 0);
+			map.put("status", 1);
 			map.put("message", "未找到指定的明细记录！");
 			return map;
 		} else {
